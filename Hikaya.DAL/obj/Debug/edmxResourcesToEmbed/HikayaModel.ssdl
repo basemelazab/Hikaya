@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HikayaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FeedbackMessage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="StoryId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SavedStory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StoryId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Story">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tags" Type="nvarchar" MaxLength="50" />
+    <Property Name="PostDate" Type="datetime" />
+    <Property Name="IsPublished" Type="bit" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StoryPlot">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StoryId" Type="int" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" />
+    <Property Name="ImageUrl" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_FeedbackMessage_Story_Id">
+    <End Role="Story" Type="Self.Story" Multiplicity="1" />
+    <End Role="FeedbackMessage" Type="Self.FeedbackMessage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Story">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FeedbackMessage">
+        <PropertyRef Name="StoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SavedStory_Story_Id">
+    <End Role="Story" Type="Self.Story" Multiplicity="1" />
+    <End Role="SavedStory" Type="Self.SavedStory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Story">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SavedStory">
+        <PropertyRef Name="StoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StoryPlot_Story_Id">
+    <End Role="Story" Type="Self.Story" Multiplicity="1" />
+    <End Role="StoryPlot" Type="Self.StoryPlot" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Story">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StoryPlot">
+        <PropertyRef Name="StoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="HikayaModelStoreContainer">
+    <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FeedbackMessage" EntityType="Self.FeedbackMessage" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SavedStory" EntityType="Self.SavedStory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Story" EntityType="Self.Story" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StoryPlot" EntityType="Self.StoryPlot" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_FeedbackMessage_Story_Id" Association="Self.FK_FeedbackMessage_Story_Id">
+      <End Role="Story" EntitySet="Story" />
+      <End Role="FeedbackMessage" EntitySet="FeedbackMessage" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SavedStory_Story_Id" Association="Self.FK_SavedStory_Story_Id">
+      <End Role="Story" EntitySet="Story" />
+      <End Role="SavedStory" EntitySet="SavedStory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StoryPlot_Story_Id" Association="Self.FK_StoryPlot_Story_Id">
+      <End Role="Story" EntitySet="Story" />
+      <End Role="StoryPlot" EntitySet="StoryPlot" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

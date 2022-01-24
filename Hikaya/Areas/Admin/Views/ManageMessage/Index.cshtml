@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Hikaya.DAL.Message>
+
+
+@using Hikaya.Resources;
+@using Hikaya.Helpers;
+@using Hikaya.DAL;
+@{
+    ViewBag.Title = StoryResourcesArabic.AdminMessagesTitle;
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<table class="table" style="border:1px solid ">
+    <tr>
+        <th style="border:1px solid">
+            @StoryResourcesArabic.Massage
+        </th>
+
+        <th style="border:1px solid">
+            @StoryResourcesArabic.Date
+        </th>
+        <th style="border:1px solid">
+            @StoryResourcesArabic.PulisherName
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="border:1px solid">
+                @item.Massage
+            </td>
+            <td style="border:1px solid">
+                @(item.PostDate.HasValue?item.PostDate.Value.ToString("dd/MM/yyyy hh:mm tt"):"")
+            </td>
+            <td style="border:1px solid">
+
+                @UserHelper.GetUserNameById(item.UserId)
+            </td>
+
+
+            <td style="border:1px solid">
+                @Html.ActionLink(StoryResourcesArabic.Details, "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
+
+            </td>
+
+
+        </tr>
+
+    }
+
+</table>
+

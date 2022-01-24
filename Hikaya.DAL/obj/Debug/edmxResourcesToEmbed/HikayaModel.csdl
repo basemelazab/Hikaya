@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HikayaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FeedbackMessage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="StoryId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Story" Relationship="Self.FK_FeedbackMessage_Story_Id" FromRole="FeedbackMessage" ToRole="Story" />
+  </EntityType>
+  <EntityType Name="SavedStory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StoryId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="UserId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Story" Relationship="Self.FK_SavedStory_Story_Id" FromRole="SavedStory" ToRole="Story" />
+  </EntityType>
+  <EntityType Name="Story">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tags" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PostDate" Type="DateTime" Precision="3" />
+    <Property Name="IsPublished" Type="Boolean" />
+    <Property Name="UserId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="FeedbackMessages" Relationship="Self.FK_FeedbackMessage_Story_Id" FromRole="Story" ToRole="FeedbackMessage" />
+    <NavigationProperty Name="SavedStories" Relationship="Self.FK_SavedStory_Story_Id" FromRole="Story" ToRole="SavedStory" />
+    <NavigationProperty Name="StoryPlots" Relationship="Self.FK_StoryPlot_Story_Id" FromRole="Story" ToRole="StoryPlot" />
+  </EntityType>
+  <EntityType Name="StoryPlot">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StoryId" Type="Int32" Nullable="false" />
+    <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ImageUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Story" Relationship="Self.FK_StoryPlot_Story_Id" FromRole="StoryPlot" ToRole="Story" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_FeedbackMessage_Story_Id">
+    <End Role="Story" Type="Self.Story" Multiplicity="1" />
+    <End Role="FeedbackMessage" Type="Self.FeedbackMessage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Story">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FeedbackMessage">
+        <PropertyRef Name="StoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SavedStory_Story_Id">
+    <End Role="Story" Type="Self.Story" Multiplicity="1" />
+    <End Role="SavedStory" Type="Self.SavedStory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Story">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SavedStory">
+        <PropertyRef Name="StoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StoryPlot_Story_Id">
+    <End Role="Story" Type="Self.Story" Multiplicity="1" />
+    <End Role="StoryPlot" Type="Self.StoryPlot" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Story">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StoryPlot">
+        <PropertyRef Name="StoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="HikayaDBContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admins" EntityType="Self.Admin" />
+    <EntitySet Name="FeedbackMessages" EntityType="Self.FeedbackMessage" />
+    <EntitySet Name="SavedStories" EntityType="Self.SavedStory" />
+    <EntitySet Name="Stories" EntityType="Self.Story" />
+    <EntitySet Name="StoryPlots" EntityType="Self.StoryPlot" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_FeedbackMessage_Story_Id" Association="Self.FK_FeedbackMessage_Story_Id">
+      <End Role="Story" EntitySet="Stories" />
+      <End Role="FeedbackMessage" EntitySet="FeedbackMessages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SavedStory_Story_Id" Association="Self.FK_SavedStory_Story_Id">
+      <End Role="Story" EntitySet="Stories" />
+      <End Role="SavedStory" EntitySet="SavedStories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StoryPlot_Story_Id" Association="Self.FK_StoryPlot_Story_Id">
+      <End Role="Story" EntitySet="Stories" />
+      <End Role="StoryPlot" EntitySet="StoryPlots" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

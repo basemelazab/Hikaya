@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Hikaya.DAL.SavedStory>
+@using Hikaya.Resources;
+@using Hikaya.DAL;
+@using Hikaya.Helpers;
+@{
+    ViewBag.Title = @StoryResourcesArabic.SavedStory;
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+
+<div class=" saved-stor-list-wrapper">
+    @foreach (SavedStory savedStory in Model)
+    {
+        <div class="story-list-item">
+            <h2>@savedStory.Story.Title</h2>
+
+        </div>
+        <div class="writer name ">
+            <span>@UserHelper.GetUserNameById(savedStory.Story.UserId) </span>
+
+        </div>
+        <div class="saved-story-tags">
+
+            @savedStory.Story.Tags
+        </div>
+        <div class="actions">
+
+            @Html.ActionLink(StoryResourcesArabic.Read,
+                                      "Details",
+                                      "Story",
+                                      new { id = savedStory.Story.Id },
+                                      new { @class = "btn btn-primary" })
+
+            @Html.ActionLink(StoryResourcesArabic.Delete,
+                         "DeleteStory",
+                         "Story",
+                         new { id = savedStory.Id },
+                         new { @class = "btn btn-primary" })
+        </div>
+        
+    }
+
+</div>
+
+
+
+
+

@@ -1,0 +1,59 @@
+﻿@using Hikaya.DAL;
+@using Hikaya.Resources;
+@using Hikaya.Helpers;
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<div class="search-header">
+    @SahredResourcesArabic.SearchResultLabel @ViewBag.keywords
+
+</div>
+<div class="jumbotron">
+    <h1>@SahredResourcesArabic.ApplicationName</h1>
+    <p class="lead">@SahredResourcesArabic.ApplicationDescription</p>
+    <p><a href="~/Story/Create" class="btn btn-primary btn-lg">@SahredResourcesArabic.btnHaveStory</a></p>
+
+    <div class="stor-list-wrapper">
+        @foreach (Story story in Model)
+        {
+            <div class="story-list-item">
+                <h2>@story.Title</h2>
+
+            </div>
+            <div class="writer name ">
+                <span>@UserHelper.GetUserNameById(story.UserId)</span>
+
+            </div>
+            <div class="-story-tags">
+
+                @story.Tags
+            </div>
+            <div class="actions">
+                @Html.ActionLink(StoryResourcesArabic.Read,
+                                          "Details",
+                                          "Story",
+                                          new { id = story.Id },
+                                          new { @class = "btn-btn-primary" })
+
+                @if (story.SavedStories != null && story.SavedStories.Where(p => p.UserId == UserHelper.GetCurrentUserId()).ToList().Count > 0)
+                {
+
+                    @Html.ActionLink(StoryResourcesArabic.Saved,
+                             "SavedStory",
+                             "Story",
+                             new { savedStoryId = story.SavedStories.Where(p => p.UserId == UserHelper.GetCurrentUserId()).First().Id },
+                             new { @class = "btn-btn-primary" })
+                }
+                else
+                {
+                    @Html.ActionLink(StoryResourcesArabic.SavedForLater,
+                             "DeleteStory",
+                             "Story",
+                             new { id = story.Id },
+                             new { @class = "btn-btn-primary" })
+                }
+            </div>
+        }
+    </div>
+</div>

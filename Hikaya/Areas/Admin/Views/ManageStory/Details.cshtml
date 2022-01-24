@@ -1,0 +1,32 @@
+﻿@model Hikaya.DAL.Story
+@using Hikaya.DAL
+@using Hikaya.Resources
+
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+
+<h2 class="story-header">@Model.Title</h2>
+<div>
+    <h4 class="story-tags">@Model.Tags</h4>
+</div>
+<hr />
+<div class="story-plot-wrapper">
+    @foreach (StoryPlot storyPlot in Model.StoryPlots)
+    {
+        <div class="row story-plot-item">
+            <div class="col-md-4">
+                <img src="@storyPlot.ImageUrl" class="img-responsive">
+            </div>
+            <div class="col-md-8">
+                <p>@storyPlot.Text</p>
+            </div>
+
+        </div>
+    }
+</div>
+<div>
+    @Html.ActionLink(StoryResourcesArabic.Publish, "Publish", new { id = Model.Id }, new { @class = "btn btn-primary" })
+</div>

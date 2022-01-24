@@ -1,0 +1,37 @@
+﻿@model Hikaya.DAL.Message
+@using Hikaya.DAL
+@using Hikaya.Resources
+@{
+    ViewBag.Title = StoryResourcesArabic.Details;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>@StoryResourcesArabic.YourMessage</h4>
+    <hr />
+
+    <h2 class="message-header">@Model.Massage</h2>
+    <div>
+        <h4 class="story-tags">@Model.UserId</h4>
+        <h4 class="story-tags">@Model.MessageId</h4>
+    </div>
+    <hr />
+    <div class="story-plot-wrapper">
+        @foreach (FeedbackMessage feedbackMessage  in Model.FeedbackMessage)
+        {
+            <div class="row story-plot-item">
+                <div class="col-md-4">
+                    @*<img src="@feedbackMessage.ImageUrl" class="img-responsive">*@
+                </div>
+                <div class="col-md-8">
+                    <p>@feedbackMessage.Text</p>
+                </div>
+
+            </div>
+        }
+    </div>
+    <div>
+        @Html.ActionLink(StoryResourcesArabic.Publish, "Publish", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    </div>
+</div>
